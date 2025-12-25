@@ -1,0 +1,45 @@
+DROP TABLE IF EXISTS customer;
+CREATE TABLE customer (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(100) NOT NULL,
+  phone varchar(20) NOT NULL,
+  email varchar(100),
+  PRIMARY KEY (id),
+  UNIQUE KEY customer_unique (phone)
+);
+
+DROP TABLE IF EXISTS dish;
+CREATE TABLE dish (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(100) NOT NULL,
+  category enum('APPETIZER','MAIN','DESSERT','DRINK') NOT NULL,
+  price decimal(8,2) NOT NULL,
+  availability tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE `order` (
+  id int NOT NULL AUTO_INCREMENT,
+  customer_id int NOT NULL,
+  order_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  total_price decimal(10,2) NOT NULL,
+  status enum('PENDING','PREPARING','READY','DELIVERED') NOT NULL DEFAULT 'PENDING',
+  PRIMARY KEY (id),
+  KEY order_customer_FK (customer_id),
+  CONSTRAINT order_customer_FK FOREIGN KEY (customer_id) REFERENCES customer(id)
+);
+
+DROP TABLE IF EXISTS order_item;
+CREATE TABLE order_item (
+  id int NOT NULL AUTO_INCREMENT,
+  order_id int NOT NULL,
+  dish_id int NOT NULL,
+  quantity int NOT NULL,
+  price decimal(8,2) NOT NULL,
+  PRIMARY KEY (id),
+  KEY order_item_dish_FK (dish_id),
+  KEY order_item_order_FK (order_id),
+  CONSTRAINT order_item_dish_FK FOREIGN KEY (dish_id) REFERENCES dish(id),
+  CONSTRAINT order_item_order_FK FOREIGN KEY (order_id) REFERENCES `order`(id)
+);
