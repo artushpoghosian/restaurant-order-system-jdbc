@@ -30,10 +30,10 @@ public class OrderItemService {
     }
 
     public double calculateOrderTotalPrice(int orderID) {
-        String sql = "SELECT total_price FROM `order` WHERE id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, orderID);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        String sql = "select ifnull(sum(oi.price * oi.quantity), 0) as total_price from order_item oi where oi.order_id = ?;";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderID);
+            ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getDouble("total_price");
             }
@@ -42,5 +42,4 @@ public class OrderItemService {
         }
         return 0.0;
     }
-
 }

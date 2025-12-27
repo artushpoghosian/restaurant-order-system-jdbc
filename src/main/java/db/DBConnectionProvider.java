@@ -11,7 +11,7 @@ public class DBConnectionProvider {
 
     private final String JDBC_URL = "jdbc:mysql://localhost:3306/restaurant_order_system";
     private final String JDBC_USERNAME = "root";
-    private final String JDBC_PASSWORD = "root";
+    private final String JDBC_PASSWORD = "rootroot";
 
     private DBConnectionProvider() {
         try {

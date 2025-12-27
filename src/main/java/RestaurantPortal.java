@@ -164,7 +164,7 @@ public class RestaurantPortal implements Commands {
         orderItem.setOrderId(order.getId());
         orderItem.setDishId(dish.getId());
         orderItem.setQuantity(quantityToBeAdded);
-        orderItem.setPrice(dish.getPrice() * quantityToBeAdded);
+        orderItem.setPrice(dish.getPrice());
         orderItemService.addOrderItem(orderItem);
         orderService.updateOrderTotal(order.getId());
         System.out.println("Dish added successfully");
@@ -284,7 +284,7 @@ public class RestaurantPortal implements Commands {
             String availabilityInput = scanner.nextLine().toUpperCase();
             if (availabilityInput.equals("TRUE")) {
                 availability = true;
-            } else if (availabilityInput.equals(false)) {
+            } else if (availabilityInput.equals("FALSE")) {
                 availability = false;
             } else System.out.println("Invalid Availability! Please use one of: TRUE, FALSE");
         }

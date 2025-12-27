@@ -85,9 +85,7 @@ public class OrderService {
     }
 
     public void updateOrderTotal(int orderID) {
-        String sql = "update `order` o set o.total_price = (" +
-                "select sum(oi.price) from order_item oi where oi.order_id =?)" +
-                "where o.id = ?";
+        String sql = "update `order` o set o.total_price = (select ifnull(sum(oi.price * oi.quantity), 0) from order_item oi where oi.order_id = ?) where o.id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, orderID);
             preparedStatement.setInt(2, orderID);
